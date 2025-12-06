@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FEMC Christmas Youth Assembly</title>
+  <meta name="description" content="Filipini Evangelical Methodist Church – Youth Ministry Hub" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root { --primary: #c41e3a; --dark: #2c3e50; --light: #f8f9fa; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Open Sans', sans-serif; background:var(--light); line-height:1.6; }
+    .container { max-width:1100px; margin:40px auto; background:white; border-radius:15px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1); opacity:0; transform:translateY(40px); transition:all 0.8s; }
+    .container.visible { opacity:1; transform:none; }
+    header { background: linear-gradient(rgba(196,30,58,0.9), rgba(196,30,58,1)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1400') center/cover; color:white; text-align:center; padding:120px 20px; }
+    h1 { font-family:'Montserrat',sans-serif; font-size:3.2rem; margin-bottom:10px; }
+    .tagline { font-size:1.5rem; }
+    .links { padding:60px 30px; display:grid; gap:30px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+    .card { background:white; border-radius:15px; padding:40px 25px; text-align:center; text-decoration:none; color:var(--dark); font-weight:600; font-size:1.3rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); transform:translateY(30px); opacity:0; transition:all 0.6s; border:2px solid transparent; }
+    .card.visible { opacity:1; transform:none; }
+    .card:hover { transform:translateY(-12px); border-color:var(--primary); box-shadow:0 20px 40px rgba(196,30,58,0.2); }
+    .card i { font-size:3.5rem; margin-bottom:20px; color:var(--primary); }
+    .counter { text-align:center; padding:50px; background:var(--dark); color:white; font-size:1.6rem; }
+    .count-num { font-size:4rem; font-weight:bold; color:var(--primary); }
+    footer { text-align:center; padding:30px; background:#111; color:#aaa; }
+    @media (max-width:600px) { h1{font-size:2.4rem;} .links{grid-template-columns:1fr; padding:40px 20px;} }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>FEMC Youth Assembly</h1>
+    <p class="tagline">Filipino Evangelical Methodist Church - North Luzon Episcopal Jurisdiction · Igniting Hearts for Christ</p>
+  </header>
+
+  <section class="links">
+    <a href="/quiz/" class="card">
+      <i class="fas fa-fire"></i><br>
+      Find Your Fire – Spiritual Gifts Quiz
+    </a>
+    <a href="mailto:youth@femcph.org" class="card">
+      <i class="fas fa-envelope"></i><br>
+      youth@femcph.org
+    </a>
+    <a href="https://youtube.com/@femcyouthph" class="card" target="_blank">
+      <i class="fab fa-youtube"></i><br>
+      Live Services & Sermons
+    </a>
+    <a href="#" class="card" onclick="alert('Coming January 2026!')">
+      <i class="fas fa-calendar-check"></i><br>
+      Youth Camp 2026
+    </a>
+    <a href="https://instagram.com/femcyouthph" class="card" target="_blank">
+      <i class="fab fa-instagram"></i><br>
+      @femcyouthph
+    </a>
+  </section>
+
+  <div class="counter">
+    <p>Young people empowered this year</p>
+    <div class="count-num" id="counter">0</div>
+  </div>
+
+  <footer>
+    © 2025 Filipino Evangelical Methodist Church – Youth Assembly<br>
+    <a href="https://femcph.org" style="color:var(--primary); text-decoration:none;">femcph.org</a>
+  </footer>
+</div>
+
+<script>
+  window.addEventListener('load',()=>{document.querySelector('.container').classList.add('visible');});
+  const observer=new IntersectionObserver(e=>e.forEach((e,i)=>e.isIntersecting&&setTimeout(()=>e.target.classList.add('visible'),i*150)),{threshold:0.1});
+  document.querySelectorAll('.card').forEach(c=>observer.observe(c));
+  const c=document.getElementById('counter'), target=1247;
+  let n=0; const inc=Math.ceil(target/80);
+  const t=setInterval(()=>{n+=inc; c.textContent=n>toLocaleString(); if(n>=target){c.textContent=target.toLocaleString();clearInterval(t);}},30);
+</script>
+</body>
+</html>
