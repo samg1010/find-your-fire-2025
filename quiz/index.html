@@ -4,42 +4,24 @@
 <meta charset="UTF-8">
 <title>FIND YOUR FIRE • Christmas Youth Assembly 2025</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- 1. ADD THESE TWO LINES (PDF + confetti) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <style>
-  body{font-family:system-ui,-apple-system,sans-serif;margin:0;background:linear-gradient(135deg,#ff6b6b,#c90076);color:#333;overflow-x:hidden;}
-  .container{max-width:600px;margin:0 auto;padding:15px;background:rgba(255,255,255,0.98);min-height:100vh;}
-  .header{text-align:center;color:#fff;background:#c90076;padding:20px;border-radius:0 0 20px 20px;}
-  .logo{width:110px;height:110px;border-radius:50%;background:#fff;margin:-60px auto 10px;position:relative;z-index:10;box-shadow:0 8px 30px rgba(0,0,0,0.4);object-fit:contain;}
-  h1{margin:0;font-size:30px;font-weight:900;padding-top:20px;letter-spacing:1px;}
-  .instructions{background:#fff3cd;padding:20px;border-radius:14px;margin:15px 0;font-size:15.5px;line-height:1.7;border-left:6px solid #c90076;}
-  .prog{height:10px;background:#ddd;border-radius:6px;overflow:hidden;margin:22px 0;}
-  .bar{height:100%;width:0;background:#ff4757;transition:width .5s ease;border-radius:6px;}
-  .q{background:#fff;padding:20px;margin:14px 0;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,0.12);}
-  .qt{font-weight:bold;font-size:17px;line-height:1.5;margin-bottom:10px;}
-  .en{font-size:14px;color:#666;font-style:italic;margin-top:6px;}
-  .options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
-  .options[data-q="bonus"]{grid-template-columns:1fr;gap:16px;}
-  .btn{padding:16px 8px;background:#f0f0f0;border-radius:12px;text-align:center;font-size:15px;transition:all .25s;cursor:pointer;user-select:none;}
-  .btn.active{background:#c90076;color:white;font-weight:bold;transform:scale(1.08);box-shadow:0 5px 15px rgba(201,0,118,0.5);}
-  #submit{background:#ff4757;color:white;border:none;padding:22px;font-size:21px;border-radius:16px;width:94%;margin:50px auto;display:block;box-shadow:0 10px 30px rgba(255,71,87,0.5);cursor:pointer;font-weight:bold;}
-  #result{display:none;background:#fff;padding:40px;border-radius:20px;text-align:center;margin:20px 0;box-shadow:0 12px 40px rgba(0,0,0,0.25);}
-  .winner{font-size:34px;color:#c90076;margin:20px 0;line-height:1.3;font-weight:900;}
-  .prog {
-  height: 14px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 20px 0;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
-}
-.bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #ff4757, #c90076);
-  border-radius: 10px;
-  transition: width 0.6s ease;
-  box-shadow: 0 0 20px rgba(255,71,87,0.8);
-}
-</style>
+    body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#ffe6e6,#fff0e6);margin:0;padding:20px;color:#333}
+    .container{max-width:600px;margin:auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+    header{background:#c41e3a;color:white;text-align:center;padding:30px 20px}
+    h1{margin:0;font-size:2.2rem}
+    .progress{text-align:center;padding:15px;background:#eee;font-weight:bold}
+    .question{padding:20px;border-bottom:1px solid #eee}
+    .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .btn{padding:15px;background:#c41e3a;color:white;border:none;border-radius:10px;font-size:1.1rem;cursor:pointer}
+    .btn:hover{background:#a0172d}
+    .result{padding:30px;text-align:center;display:none}
+    #downloadBtn{margin-top:25px;padding:16px 40px;font-size:1.4rem;background:#28a745;border:none;color:white;border-radius:50px;cursor:pointer}
+    input#name{width:100%;padding:15px;margin:15px 0;border:2px solid #c41e3a;border-radius:10px;font-size:1.2rem}
+  </style>
+
 </head>
 <body>
 <div class="container">
@@ -276,7 +258,34 @@
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" type="audio/mpeg">
 </audio>
 
-<script>
+<div id="intro">
+    <div style="padding:30px;text-align:center">
+      <h2>Discover Your Spiritual Gift & Calling!</h2>
+      <p>Answer honestly • 101 questions • Takes ~20 mins</p>
+      <input type="text" id="name" placeholder="Enter your name (optional)">
+      <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+  </div>
+
+  <div id="quiz" style="display:none">
+    <div class="progress">Question <span id="current">1</span> / 101 answered: <span id="answered">0</span></div>
+    <div class="question" id="qtext"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <div class="result" id="result">
+    <h2 id="greeting">Hi [Name]!</h2>
+    <h2>Your Calling is...</h2>
+    <div id="topWorkshop" style="font-size:3rem;margin:30px 0;color:#c41e3a"></div>
+    <p id="description" style="font-size:1.3rem;line-height:1.8"></p>
+    <div id="scores"></div>
+    <p style="margin:30px 0"><strong>Bible Verse for You:</strong><br><em id="verse" style="font-size:1.4rem"></em></p>
+    <button id="downloadBtn">Download My Results as PDF</button>
+    <button class="btn" onclick="location.reload()" style="margin-top:10px">Take Again</button>
+  </div>
+</div>
+  
+  <script>
 const STORAGE_KEY = 'findYourFire2025';
 const TOTAL = 101;
 let answers = [];
@@ -332,7 +341,102 @@ document.getElementById('submit').onclick=()=>{
   document.getElementById('result').style.display='block';
   document.getElementById('result').scrollIntoView({behavior:'smooth'});
 };
+function showResult() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('greeting').textContent = `Congratulations, ${userName}! 🎉`;
 
+    const max = Math.max(...scores);
+    const top = scores.indexOf(max);
+
+    document.getElementById('topWorkshop').innerHTML = `${icons[top]} ${workshops[top]}`;
+    document.getElementById('description').textContent = descriptions[top];
+    document.getElementById('verse').textContent = verses[top];
+
+    let scoreHTML = "<div style='margin:30px 0'>";
+    workshops.forEach((w,i) => {
+      const pct = Math.round((scores[i]/110)*100);
+      const isTop = i === top;
+      scoreHTML += `<div style="margin:15px 0;text-align:center">
+        <div style="font-size:4rem">${icons[i]}</div>
+        <div style="font-weight:bold;font-size:1.2rem;color:${isTop?'#c41e3a':'#555'}">${w}</div>
+        <div style="font-size:1rem">${scores[i]}/110 • ${pct}%</div>
+      </div>`;
+    });
+    scoreHTML += "</div>";
+    document.getElementById('scores').innerHTML = scoreHTML;
+
+    confetti({particleCount:300,spread:80,origin:{y:0.6}});
+    document.getElementById('downloadBtn').onclick = generateBeautifulPDF;
+  }
+
+  // ←←← ADD THIS ENTIRE NEW FUNCTION AT THE END (before closing </script>) →→→
+  function generateBeautifulPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const red = [196, 30, 58];
+    const max = Math.max(...scores);
+    const top = scores.indexOf(max);
+
+    doc.setFillColor(...red);
+    doc.rect(0, 0, pageWidth, 60, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(28);
+    doc.setFont("helvetica", "bold");
+    doc.text("FIND YOUR FIRE", pageWidth/2, 30, { align: "center" });
+    doc.setFontSize(16);
+    doc.text("Christmas Youth Assembly 2025", pageWidth/2, 42, { align: "center" });
+
+    doc.setTextColor(...red);
+    doc.setFontSize(32);
+    doc.text(userName.toUpperCase(), pageWidth/2, 75, { align: "center" });
+    doc.setFontSize(48);
+    doc.text(icons[top], pageWidth/2, 100, { align: "center" });
+    doc.setFontSize(24);
+    doc.text(workshops[top], pageWidth/2, 120, { align: "center" });
+
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(14);
+    doc.text(descriptions[top], pageWidth/2, 140, { align: "center", maxWidth: 160 });
+
+    let y = 170;
+    workshops.forEach((w,i) => {
+      const pct = Math.round((scores[i]/110)*100);
+      const isTop = i === top;
+      doc.setFillColor(isTop ? 196:220, isTop ? 30:30, isTop ? 58:58);
+      doc.circle(pageWidth/2, y, 25, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFontSize(20);
+      doc.text(`${pct}%`, pageWidth/2, y+5, { align: "center" });
+      doc.setFontSize(12);
+      doc.text(w, pageWidth/2, y+35, { align: "center" });
+      y += 60;
+    });
+
+    doc.setFillColor(250, 240, 230);
+    doc.rect(20, 260, pageWidth-40, 25, 'F');
+    doc.setTextColor(...red);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "italic");
+    doc.text(verses[top], pageWidth/2, 273, { align: "center" });
+
+    doc.setTextColor(100,100,100);
+    doc.setFontSize(10);
+    doc.text("Free Methodist Church Philippines • Youth Assembly 2025", pageWidth/2, 290, { align: "center" });
+
+    doc.save(`${userName}_FindYourFire_2025.pdf`);
+  }
+
+  // Auto-resume (keep your existing one)
+  const saved = localStorage.getItem('fireQuiz');
+  if (saved) {
+    const data = JSON.parse(saved);
+    current = data.current || 0;
+    answered = data.answered || 0;
+    scores = data.scores || [0,0,0,0,0];
+    startQuiz();
+  }
 load();restore();calc();progress();
 </script>
 </body>
