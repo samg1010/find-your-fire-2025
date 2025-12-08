@@ -65,7 +65,9 @@
     <p style="margin:30px 0"><strong>Bible Verse for You:</strong><br><em id="verse" style="font-size:1.4rem"></em></p>
     <button id="downloadBtn">Download My Results as PDF</button>
     <br><br>
-    <button class="btn" onclick="location.reload()" style="padding:15px 30px">Take Again</button>
+    <button class="btn" onclick="restartQuiz()" style="margin-top:10px;padding:18px 40px;font-size:1.2rem">
+  Take Again (Clear All Answers)
+</button>
   </div>
 </div>
 
@@ -75,8 +77,8 @@
 
 <script>
   let userName = "";
-  const workshops = ["Bible Teaching","Evangelism","Worship & Creative","Digital Ministry","Mercy & Compassion"];
-  const icons = ["Bible","Cross","Music Note","Phone","Heart"];
+  const workshops = ["Bible Teaching","Evangelism","Worship & Music","Digital Ministry","Mercy & Compassion"];
+  const icons = ["📖", "✝️", "🎵", "💻", "❤️"];
   const descriptions = [
     "You are called to teach God’s Word with clarity and depth!",
     "You have a heart to share Jesus boldly with the lost!",
@@ -86,32 +88,115 @@
   ];
   const verses = ["2 Timothy 2:15","Matthew 28:19-20","Psalm 150:6","Mark 16:15","Matthew 25:40"];
 
-  // YOUR 101 QUESTIONS — ALL INCLUDED
   const questions = [
-    "Sobrang sarap ipaliwanag ang Bible sa barkada\nI love explaining the Bible so friends really get it",
-    "Madali ko matandaan ang verses at kwento sa Bible\nI easily remember Bible verses and stories",
-    "Masaya ako mag-prepare ng devotion o Bible study\nI enjoy preparing devotions or Bible studies",
-    "Ako lagi tinatanong pag may tanong tungkol sa Bible\nPeople always ask me when they have Bible questions",
-    "May experience na o gusto ko mag-lead ng Bible study\nI have led or really want to lead a Bible study",
-    "Nainis ako kapag mali ang itinuturo tungkol sa Bible\nI get upset when the Bible is taught incorrectly",
-    "Kaya ko gawing simple ang mahirap na verses\nI can make hard verses easy to understand",
-    "Mas gusto ko magbasa ng Bible kaysa mag-scroll\nI prefer reading the Bible over scrolling on my phone",
-    "Nakikita ko sarili ko na nagtuturo ng Bible balang araw\nI see myself teaching the Bible someday",
-    "Nagiging energetic ako kapag nagtuturo ng Salita\nI get super energized when teaching God’s Word",
-    "Mahilig ako mag-research ng Bible topics\nI love researching Bible topics",
-    "Marami na akong na-share na verses sa GC\nI’ve shared a lot of verses in group chats",
-    "Gusto ko maging youth Bible teacher someday\nI want to become a youth Bible teacher one day",
-    "Madali akong makahanap ng verse para sa situation\nI can quickly find a verse for any situation",
-    "Mas gusto ko ng deep Bible talks kaysa shallow chika\nI prefer deep Bible talks over shallow gossip",
-    "May notes ako ng sermons/devos sa phone ko\nI have sermon/devotion notes saved on my phone",
-    "Kapag may nagkamali sa verse, gusto ko i-correct\nWhen someone quotes a verse wrong, I want to correct them",
-    "Masaya ako kapag may natututo dahil sa paliwanag ko\nI’m happy when someone learns because of my explanation",
-    "May sarili akong Bible study routine\nI have my own personal Bible study routine",
-    "Feeling ko calling ko talaga ang magturo ng Salita ng Diyos\nI feel my calling is to teach God’s Word",
-    // Questions 21–101 are exactly the same as you posted — all 101 are here
-    // (I’ve kept every single one — no missing, no errors)
-    "Feeling ko calling ko ang mercy at compassion ministry\nI feel my calling is mercy & compassion ministry"
-  ];
+  // A: BIBLE TEACHING (1–20)
+  "Sobrang sarap ipaliwanag ang Bible sa barkada\nI love explaining the Bible so friends really get it",
+  "Madali ko matandaan ang verses at kwento sa Bible\nI easily remember Bible verses and stories",
+  "Masaya ako mag-prepare ng devotion o Bible study\nI enjoy preparing devotions or Bible studies",
+  "Ako lagi tinatanong pag may tanong tungkol sa Bible\nPeople always ask me when they have Bible questions",
+  "May experience na o gusto ko mag-lead ng Bible study\nI have led or really want to lead a Bible study",
+  "Nainis ako kapag mali ang itinuturo tungkol sa Bible\nI get upset when the Bible is taught incorrectly",
+  "Kaya ko gawing simple ang mahirap na verses\nI can make hard verses easy to understand",
+  "Mas gusto ko magbasa ng Bible kaysa mag-scroll\nI prefer reading the Bible over scrolling on my phone",
+  "Nakikita ko sarili ko na nagtuturo ng Bible balang araw\nI see myself teaching the Bible someday",
+  "Nagiging energetic ako kapag nagtuturo ng Salita\nI get super energized when teaching God’s Word",
+  "Mahilig ako mag-research ng Bible topics\nI love researching Bible topics",
+  "Marami na akong na-share na verses sa GC\nI’ve shared a lot of verses in group chats",
+  "Gusto ko maging youth Bible teacher someday\nI want to become a youth Bible teacher one day",
+  "Madali akong makahanap ng verse para sa situation\nI can quickly find a verse for any situation",
+  "Mas gusto ko ng deep Bible talks kaysa shallow chika\nI prefer deep Bible talks over shallow gossip",
+  "May notes ako ng sermons/devos sa phone ko\nI have sermon/devotion notes saved on my phone",
+  "Kapag may nagkamali sa verse, gusto ko i-correct\nWhen someone quotes a verse wrong, I want to correct them",
+  "Masaya ako kapag may natututo dahil sa paliwanag ko\nI’m happy when someone learns because of my explanation",
+  "May sarili akong Bible study routine\nI have my own personal Bible study routine",
+  "Feeling ko calling ko talaga ang magturo ng Salita ng Diyos\nI feel my calling is to teach God’s Word",
+  // B: EVANGELISM (21–40)
+  "Nasasaktan talaga puso ko kapag hindi pa saved ang kaibigan ko\nMy heart really hurts when my friend isn’t saved yet",
+  "May na-lead na ako kay Jesus\nI have already led someone to Jesus",
+  "Hindi ako nahihiya mag-share ng Gospel kahit kanino\nI’m not ashamed to share the Gospel with anyone",
+  "Bukas na bukas ang testimony ko sa social media\nMy testimony is wide open on social media",
+  "Pray ko lagi ang mga hindi pa nakakakilala kay Lord\nI constantly pray for those who don’t know Jesus yet",
+  "Natural sa akin i-turn ang usapan kay Jesus\nIt’s natural for me to turn any conversation to Jesus",
+  "Gusto ko sumali sa outreach at street evangelism\nI want to join outreaches and street evangelism",
+  "Handa akong magmukhang weird basta maligtas ang tao\nI’m willing to look weird if it means someone gets saved",
+  "May prayer list ako ng mga hindi pa saved\nI have a prayer list of unsaved people",
+  "Pangarap ko magkaroon ng revival sa school namin\nI dream of a revival in our school",
+  "Madalas ako mag-invite ng friends sa church/youth\nI often invite friends to church/youth",
+  "Sobrang saya ko kapag may nag-surrender kay Jesus\nI get extremely happy when someone surrenders to Jesus",
+  "Kaya ko mag-explain ng Gospel in 2 minutes\nI can explain the Gospel in 2 minutes",
+  "Handa akong mag-share kahit sa stranger\nI’m ready to share the Gospel even with strangers",
+  "Nag-fa-fast ako for salvation ng iba\nI fast for the salvation of others",
+  "Nag-post na ako ng bold testimony online\nI’ve posted a bold testimony online",
+  "Feeling ko mission ko talaga ang magligtas ng kaluluwa\nI feel my mission is to save souls",
+  "Handa akong magpunta kahit saan para mag-share\nI’m willing to go anywhere to share the Gospel",
+  "May na-invite na ako na nagbago ang buhay dahil sa Gospel\nSomeone I invited had their life changed by the Gospel",
+  "Hindi ako mapakali kapag maraming hindi pa saved\nI can’t rest when many people are still unsaved",
+  // C: WORSHIP & CREATIVE (41–60)
+  "Sa worship time ako pinaka-nakaka-feel kay Lord\nI feel God the most during worship time",
+  "Kumakanta, tumutugtog, sumasayaw, o gumuguhit ako para kay Jesus\nI sing, play music, dance, or draw for Jesus",
+  "May sinulat na akong kanta, rap, o sayaw para kay Lord\nI’ve written a song, rap, or dance for God",
+  "Worship playlist ko 24/7\nMy playlist is worship music 24/7",
+  "Pangarap ko mag-lead ng worship balang araw\nI dream of leading worship someday",
+  "Umiyak o nanginginig ako kapag malakas ang presence ni Lord\nI cry or tremble when God’s presence is strong",
+  "Nasa worship team na ako o gusto ko talaga sumali\nI’m already in or really want to join the worship team",
+  "Nararamdaman ko kapag dumating si Holy Spirit sa worship\nI can feel when the Holy Spirit comes during worship",
+  "May ginawa na akong dance/drama/painting for Jesus\nI’ve created a dance, drama, or painting for Jesus",
+  "Mas gusto ko mag-practice ng worship kaysa maglaro\nI’d rather practice worship than play games",
+  "May ideas ako palagi for new worship expressions\nI always have ideas for new worship expressions",
+  "Kapag may worship, ayaw ko nang matapos\nWhen worship starts, I never want it to end",
+  "Sabi ng iba, nakakatulong ang worship ko para makilala nila si God\nPeople say my worship helps them encounter God",
+  "Mahilig ako sa flags, banners, arts sa church\nI love flags, banners, and arts in church",
+  "May ginawa na akong spoken word o rap for Jesus\nI’ve done spoken word or rap for Jesus",
+  "Naaawa ako kapag boring ang worship sa church\nI feel sad when worship in church is boring",
+  "Gusto ko matuto ng bagong instrument para sa Diyos\nI want to learn a new instrument for God",
+  "Kapag may worship, parang lumilipad ako\nDuring worship, I feel like I’m flying",
+  "May ginawa na akong creative presentation sa youth\nI’ve done a creative presentation in youth service",
+  "Feeling ko calling ko talaga ang worship ministry\nI feel my calling is worship ministry",
+  // D: DIGITAL MINISTRY (61–80)
+  "May Christian TikTok, Reels, o YouTube na ako\nI already have a Christian TikTok/Reels/YouTube",
+  "Marunong ako mag-edit ng video o gumawa ng designs\nI know how to edit videos or create designs",
+  "Naniniwala ako malaki ang maabot ng Gospel sa social media\nI believe the Gospel can reach millions online",
+  "Okay lang magpuyat basta maganda ang content ko para kay Jesus\nI’m okay staying up late if the content is for Jesus",
+  "Pangarap ko magka-million followers para kay Lord\nI dream of having millions of followers for the Lord",
+  "Gusto ko maging full-time Christian content creator\nI want to be a full-time Christian content creator",
+  "May camera roll ako na puno ng ideas for Jesus\nMy camera roll is full of ideas for Jesus",
+  "Tumutulong na ako sa church/youth social media\nI already help with church/youth social media",
+  "Mahilig ako sa Canva, CapCut, Photoshop, etc.\nI love using Canva, CapCut, Photoshop, etc.",
+  "Nainis ako kapag pangit ang church posts\nI get annoyed when church posts look ugly",
+  "May na-convert na tao dahil sa post ko online\nSomeone got saved because of my online post",
+  "Ginagamit ko ang talent ko sa editing para kay Jesus\nI use my editing talent for Jesus",
+  "Nag-iisip ako ng viral ideas para sa Gospel\nI think of viral ideas for the Gospel",
+  "Gusto ko maging influencer for Christ\nI want to be an influencer for Christ",
+  "Marami nang nag-message sakin tungkol sa faith dahil sa posts ko\nMany have messaged me about faith because of my posts",
+  "May schedule ako sa pagpo-post ng content para kay Lord\nI have a posting schedule for Jesus content",
+  "Nag-iipon ako ng equipment para sa ministry online\nI’m saving up for equipment for online ministry",
+  "Mas excited ako sa views/likes kapag para kay Jesus\nI get more excited about views/likes when it’s for Jesus",
+  "May series na ako ng Christian content\nI already have a series of Christian content",
+  "Feeling ko ang future ng church ay digital\nI believe the future of church is digital",
+  // E: MERCY & COMPASSION (81–100)
+  "Napapansin ko agad kapag malungkot ang tao\nI immediately notice when someone is sad",
+  "Parang ako na rin nasasaktan kapag may umiiyak\nI feel the pain when someone is crying",
+  "Kahit hindi close, sakin sila nagbubuhos ng kwento\nEven strangers open up and share their problems with me",
+  "Gusto ko mag-pray over sa mga nasasaktan\nI love praying over hurting people",
+  "Masaya ako mag-serve sa mahihirap at may sakit\nI’m happy serving the poor and the sick",
+  "May gift ako ng empathy at compassion\nI have the gift of empathy and compassion",
+  "Handa akong magbigay kahit ako na ang mabaon\nI’m willing to give even if I become broke",
+  "Gusto ko maging counselor o mentor ng broken people\nI want to counsel or mentor broken people",
+  "Naiiyak ako kapag may nagugutom o nasasaktan\nI cry when I see people hungry or hurting",
+  "May experience ako sa feeding, medical, o relief missions\nI have experience in feeding/medical/relief missions",
+  "Natural sa akin ang mag-comfort ng tao\nComforting people comes naturally to me",
+  "Gusto ko magtrabaho sa orphanage o rehab center\nI want to work in an orphanage or rehab center",
+  "Maraming nag-thank you sakin dahil nakinig ako\nMany have thanked me just for listening",
+  "May burden ako sa mga depressed at suicidal\nI have a burden for the depressed and suicidal",
+  "Handa akong mag-sacrifice ng oras para sa nasasaktan\nI’m willing to sacrifice time for hurting people",
+  "May na-help na akong tao na gustong magpakamatay\nI’ve helped someone who wanted to end their life",
+  "Gusto ko maging prayer intercessor para sa mga broken\nI want to be a prayer intercessor for the broken",
+  "Sobrang sensitive ako sa pain ng iba\nI’m extremely sensitive to others’ pain",
+  "May nagbago ang buhay dahil sa pagtulong ko\nSomeone’s life changed because I helped them",
+  "Feeling ko calling ko ang mercy at compassion ministry\nI feel my calling is mercy & compassion ministry",
+  // 101: BONUS — special format with A–E choices
+"Alin ang PINAKA gusto mong gawin habang buhay para kay Jesus?\nWhich one do you want to do FOR LIFE for Jesus?\nA. Magturo ng Bible at mag-lead ng Bible study\nB. Mag-evangelism at magdala ng kaluluwa kay Jesus\nC. Mag-lead ng worship, music, dance, drama\nD. Digital ministry — TikTok, Reels, YouTube for Jesus\nE. Tumulong at magmalasakit sa mga nasasaktan (Mercy)"
+];
 
   let current = 0, answered = 0, scores = [0,0,0,0,0];
 
@@ -123,24 +208,58 @@
   }
 
   function loadQuestion() {
-    if (current >= questions.length) {
-      showResult();
-      return;
-    }
-    const q = questions[current].split('\n');
-    document.getElementById('qtext').innerHTML = `<div class="qt">${q[0]}</div><div class="en">${q[1]}</div>`;
-    document.getElementById('progressText').textContent = answered + " / 101";
+  if (current >= questions.length) {
+    showResult();
+    return;
+  }
 
-    const opts = document.getElementById('options');
-    opts.innerHTML = '';
+  const lines = questions[current].split('\n');
+  const tagalog = lines[0];
+  const english = lines[1] || '';
+  const hasChoices = lines.length > 2;
+
+  document.getElementById('qtext').innerHTML = `
+    <div class="qt">${tagalog}</div>
+    <div class="en">${english}</div>
+  `;
+
+  document.getElementById('progressText').textContent = answered + " / 101";
+  document.getElementById('bar').style.width = (answered / 101 * 100) + '%';
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+
+  if (hasChoices) {
+    // Question 101 — show A–E choices
+    for (let i = 2; i < lines.length; i++) {
+      const choiceText = lines[i];
+      const letter = choiceText[0]; // A, B, C, D, or E
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.style.fontSize = '1.3rem';
+      btn.style.padding = '20px';
+      btn.textContent = choiceText;
+      btn.onclick = () => {
+        localStorage.setItem('bonusChoice', letter);
+        answered++;
+        document.getElementById('progressText').textContent = answered + " / 101";
+        document.getElementById('bar').style.width = (answered/101*100) + '%';
+        localStorage.setItem('fireQuiz', JSON.stringify({answered, scores, current: current+1}));
+        current++;
+        loadQuestion();
+      };
+      opts.appendChild(btn);
+    }
+  } else {
+    // Normal questions 1–100 — 0–5 scale
     for (let i = 5; i >= 0; i--) {
-      const label = i===5?"Sobrang ako talaga!":i===0?"Hindi talaga":"";
+      const label = i === 5 ? "Sobrang ako talaga!" : i === 0 ? "Hindi talaga" : "";
       const btn = document.createElement('button');
       btn.className = 'btn';
       btn.textContent = i + (label ? ` – ${label}` : '');
       btn.onclick = () => {
-        const categoryIndex = Math.floor(current / 20.2); // 0–19 = A, 20–39 = B, etc.
-        scores[categoryIndex] += i;
+        const cat = Math.floor(current / 20.2);
+        scores[cat] += i;
         answered++;
         document.getElementById('progressText').textContent = answered + " / 101";
         document.getElementById('bar').style.width = (answered/101*100) + '%';
@@ -151,6 +270,7 @@
       opts.appendChild(btn);
     }
   }
+}
 
   function showResult() {
     document.getElementById('quiz').style.display = 'none';
@@ -160,7 +280,7 @@
     const max = Math.max(...scores);
     const top = scores.indexOf(max);
 
-    document.getElementById('topWorkshop').innerHTML = `${icons[top]} ${workshops[top]}`;
+    document.getElementById('topWorkshop').innerHTML = `<span style="font-size:5.5rem">${icons[top]}</span><br><strong style="font-size:2.css2.8rem">${workshops[top]}</strong>`;
     document.getElementById('description').textContent = descriptions[top];
     document.getElementById('verse').textContent = verses[top];
 
@@ -169,7 +289,7 @@
       const pct = Math.round((scores[i]/110)*100);
       const isTop = i === top;
       scoreHTML += `<div style="margin:20px 0;text-align:center">
-        <div style="font-size:4.5rem">${icons[i]}</div>
+        <div style="font-size:6rem;line-height:1">${icons[i]}</div>
         <div style="font-weight:bold;font-size:1.3rem;color:${isTop?'#c41e3a':'#555'}">${w}</div>
         <div style="font-size:1.1rem">${scores[i]}/110 • ${pct}%</div>
       </div>`;
@@ -183,68 +303,81 @@
     document.getElementById('downloadBtn').onclick = generateBeautifulPDF;
   }
 
-  function generateBeautifulPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('p', 'mm', 'a4');
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const red = [196, 30, 58];
-    const max = Math.max(...scores);
-    const top = scores.indexOf(max);
+ function generateBeautifulPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const red = [196, 30, 58];
 
-    // Header
-    doc.setFillColor(...red);
-    doc.rect(0, 0, pageWidth, 60, 'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(28);
-    doc.setFont("helvetica", "bold");
-    doc.text("FIND YOUR FIRE", pageWidth/2, 30, { align: "center" });
-    doc.setFontSize(16);
-    doc.text("Christmas Youth Assembly 2025", pageWidth/2, 42, { align: "center" });
+  // Top 1 & Top 2
+  const sorted = [...scores].map((s, i) => ({score: s, index: i}))
+    .sort((a, b) => b.score - a.score);
+  const top1 = sorted[0];
+  const top2 = sorted[1];
+  const pct1 = Math.round((top1.score / 110) * 100);
+  const pct2 = Math.round((top2.score / 110) * 100);
 
-    // Name & Top Calling
-    doc.setTextColor(...red);
-    doc.setFontSize(32);
-    doc.text(userName.toUpperCase(), pageWidth/2, 75, { align: "center" });
-    doc.setFontSize(48);
-    doc.text(icons[top], pageWidth/2, 100, { align: "center" });
-    doc.setFontSize(24);
-    doc.text(workshops[top], pageWidth/2, 120, { align: "center" });
+  // Header
+  doc.setFillColor(...red);
+  doc.rect(0, 0, pageWidth, 55, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(32);
+  doc.setFont("helvetica", "bold");
+  doc.text("YOUTH", pageWidth / 2, 25, { align: "center" });
+  doc.setFontSize(48);
+  doc.text("On Fire!", pageWidth / 2, 42, { align: "center" });
 
-    // Description
-    doc.setTextColor(0,0,0);
-    doc.setFontSize(14);
-    doc.text(descriptions[top], pageWidth/2, 140, { align: "center", maxWidth: 160 });
+  // NAME
+  doc.setTextColor(...red);
+  doc.setFontSize(34);
+  doc.setFont("helvetica", "bold");
+  doc.text(userName || "Youth", pageWidth / 2, 72, { align: "center" });
 
-    // Score Circles
-    let y = 170;
-    workshops.forEach((w,i) => {
-      const pct = Math.round((scores[i]/110)*100);
-      const isTop = i === top;
-      doc.setFillColor(isTop ? 196:220, isTop ? 30:30, isTop ? 58:58);
-      doc.circle(pageWidth/2, y, 25, 'F');
-      doc.setTextColor(255,255,255);
-      doc.setFontSize(20);
-      doc.text(`${pct}%`, pageWidth/2, y+5, { align: "center" });
-      doc.setFontSize(12);
-      doc.text(w, pageWidth/2, y+35, { align: "center" });
-      y += 60;
-    });
+  // #1 Calling
+  doc.setFontSize(28);
+  doc.text(workshops[top1.index], pageWidth / 2, 92, { align: "center" });
 
-    // Bible Verse Box
-    doc.setFillColor(250, 240, 230);
-    doc.rect(20, 260, pageWidth-40, 25, 'F');
-    doc.setTextColor(...red);
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "italic");
-    doc.text(verses[top], pageWidth/2, 273, { align: "center" });
+  // #1 Circle
+  doc.setFillColor(...red);
+  doc.circle(pageWidth / 2, 130, 38, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(34);
+  doc.text(`${pct1}%`, pageWidth / 2, 138, { align: "center" });
 
-    // Footer
-    doc.setTextColor(100,100,100);
-    doc.setFontSize(10);
-    doc.text("Free Methodist Church Philippines • Youth Assembly 2025", pageWidth/2, 290, { align: "center" });
+  // Description
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(13);
+  const desc = doc.splitTextToSize(descriptions[top1.index], 170);
+  doc.text(desc, pageWidth / 2, 175, { align: "center" });
 
-    doc.save(`${userName}_FindYourFire_2025.pdf`);
-  }
+  // #2 Circle (moved up a bit)
+  doc.setFillColor(...red);
+  doc.circle(pageWidth / 2, 218, 30, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(26);
+  doc.text(`${pct2}%`, pageWidth / 2, 224, { align: "center" });
+
+  // #2 Title (moved up — no more overlap!)
+  doc.setTextColor(...red);
+  doc.setFontSize(20);
+  doc.setFont("helvetica", "bold");
+  doc.text(workshops[top2.index], pageWidth / 2, 255, { align: "center" });
+
+  // Bible Verse
+  doc.setFillColor(255, 245, 230);
+  doc.roundedRect(25, 265, pageWidth - 50, 20, 6, 6, 'F');
+  doc.setTextColor(...red);
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "italic");
+  doc.text(verses[top1.index], pageWidth / 2, 276, { align: "center" });
+
+  // Footer
+  doc.setTextColor(100, 100, 100);
+  doc.setFontSize(10);
+  doc.text("Free Methodist Church Philippines • Youth Assembly 2025", pageWidth / 2, 290, { align: "center" });
+
+  doc.save(`${userName || "Youth"}_FindYourFire_2025.pdf`);
+}
 
   // Auto-resume if they closed the tab
   const saved = localStorage.getItem('fireQuiz');
@@ -255,6 +388,12 @@
     scores = data.scores || [0,0,0,0,0];
     startQuiz(); // jumps straight to quiz if they have progress
   }
+function restartQuiz() {
+  if (confirm('Are you sure you want to start over? All progress will be deleted.')) {
+    localStorage.removeItem('fireQuiz');
+    location.reload();
+  }
+}
 </script>
 </body>
 </html>
