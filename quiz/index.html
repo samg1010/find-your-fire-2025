@@ -198,101 +198,118 @@
 "Alin ang PINAKA gusto mong gawin habang buhay para kay Jesus?\nWhich one do you want to do FOR LIFE for Jesus?\nA. Magturo ng Bible at mag-lead ng Bible study\nB. Mag-evangelism at magdala ng kaluluwa kay Jesus\nC. Mag-lead ng worship, music, dance, drama\nD. Digital ministry — TikTok, Reels, YouTube for Jesus\nE. Tumulong at magmalasakit sa mga nasasaktan (Mercy)"
 ];
 
-  let current = 0, answered = 0, scores = [0,0,0,0,0];
-
   function startQuiz() {
     userName = document.getElementById('name').value.trim() || "Youth";
+
+    // Auto-resume only after user clicked Start
+    const saved = localStorage.getItem('fireQuiz');
+    if (saved) {
+      const data = JSON.parse(saved);
+      current  = data.current  || 0;
+      answered = data.answered || 0;
+      scores   = data.scores   || [0,0,0,0,0];
+      // Optional: if they changed name, reset everything
+      if (data.userName && data.userName !== userName) {
+        current = answered = 0;
+        scores = [0,0,0,0,0];
+        localStorage.removeItem('fireQuiz');
+      }
+    }
+
     document.getElementById('intro').style.display = 'none';
-    document.getElementById('quiz').style.display = 'block';
+    document.getElementById('quiz').style.display  = 'block';
     loadQuestion();
   }
 
   function loadQuestion() {
-  if (current >= questions.length) {
-    showResult();
-    return;
-  }
-
-  const lines = questions[current].split('\n');
-  const tagalog = lines[0];
-  const english = lines[1] || '';
-  const hasChoices = lines.length > 2;
-
-  document.getElementById('qtext').innerHTML = `
-    <div class="qt">${tagalog}</div>
-    <div class="en">${english}</div>
-  `;
-
-  document.getElementById('progressText').textContent = answered + " / 101";
-  document.getElementById('bar').style.width = (answered / 101 * 100) + '%';
-
-  const opts = document.getElementById('options');
-  opts.innerHTML = '';
-
-  if (hasChoices) {
-    // Question 101 — show A–E choices
-    for (let i = 2; i < lines.length; i++) {
-      const choiceText = lines[i];
-      const letter = choiceText[0]; // A, B, C, D, or E
-      const btn = document.createElement('button');
-      btn.className = 'btn';
-      btn.style.fontSize = '1.3rem';
-      btn.style.padding = '20px';
-      btn.textContent = choiceText;
-      btn.onclick = () => {
-        localStorage.setItem('bonusChoice', letter);
-        answered++;
-        document.getElementById('progressText').textContent = answered + " / 101";
-        document.getElementById('bar').style.width = (answered/101*100) + '%';
-        localStorage.setItem('fireQuiz', JSON.stringify({answered, scores, current: current+1}));
-        current++;
-        loadQuestion();
-      };
-      opts.appendChild(btn);
+    if (current >= questions.length) {
+      showResult();
+      return;
     }
-  } else {
-    // Normal questions 1–100 — 0–5 scale
-    for (let i = 5; i >= 0; i--) {
-      const label = i === 5 ? "Sobrang ako talaga!" : i === 0 ? "Hindi talaga" : "";
-      const btn = document.createElement('button');
-      btn.className = 'btn';
-      btn.textContent = i + (label ? ` – ${label}` : '');
-      btn.onclick = () => {
-        const cat = Math.floor(current / 20.2);
-        scores[cat] += i;
-        answered++;
-        document.getElementById('progressText').textContent = answered + " / 101";
-        document.getElementById('bar').style.width = (answered/101*100) + '%';
-        localStorage.setItem('fireQuiz', JSON.stringify({answered, scores, current: current+1}));
-        current++;
-        loadQuestion();
-      };
-      opts.appendChild(btn);
+
+    const lines = questions[current].split('\n');
+    const tagalog = lines[0];
+    const english = lines[1] || '';
+    const hasChoices = lines.length > 2;
+
+    document.getElementById('qtext').innerHTML = `
+      <div class="qt">${tagalog}</div>
+      <div class="en">${english}</div>
+    `;
+
+    document.getElementById('progressText').textContent = answered + " / 101";
+    document.getElementById('bar').style.width = (answered / 101 * 100) + '%';
+
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+
+    if (hasChoices) {
+      // Question 101 – A to E bonus
+      for (let i = 2; i < lines.length; i++) {
+        const text = lines[i];
+        const letter = text[0];
+        const index = "ABCDE".indexOf(letter);
+
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.style.fontSize = '1.3rem';
+        btn.style.padding = '20px';
+        btn.textContent = text;
+        btn.onclick = () => {
+          if (index >= 0) scores[index] += 10; // +10 bonus
+          nextQuestion();
+        };
+        opts.appendChild(btn);
+      }
+    } else {
+      // Normal 0–5 scale
+      for (let i = 5; i >= 0; i--) {
+        const label = i === 5 ? "Sobrang ako talaga!" : i === 0 ? "Hindi talaga" : "";
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = i + (label ? ` – ${label}` : '');
+        btn.onclick = () => {
+          const cat = Math.floor(current / 20);
+          scores[cat] += i;
+          nextQuestion();
+        };
+        opts.appendChild(btn);
+      }
     }
   }
-}
+
+  function nextQuestion() {
+    answered++;
+    current++;
+    localStorage.setItem('fireQuiz', JSON.stringify({userName, current, answered, scores}));
+    loadQuestion();
+  }
 
   function showResult() {
     document.getElementById('quiz').style.display = 'none';
     document.getElementById('result').style.display = 'block';
+
     document.getElementById('greeting').textContent = `Congratulations, ${userName}!`;
 
     const max = Math.max(...scores);
     const top = scores.indexOf(max);
 
-    document.getElementById('topWorkshop').innerHTML = `<span style="font-size:5.5rem">${icons[top]}</span><br><strong style="font-size:2.css2.8rem">${workshops[top]}</strong>`;
+    document.getElementById('topWorkshop').innerHTML = `
+      <span style="font-size:5.5rem">${icons[top]}</span><br>
+      <strong style="font-size:2.8rem">${workshops[top]}</strong>
+    `;
     document.getElementById('description').textContent = descriptions[top];
     document.getElementById('verse').textContent = verses[top];
 
-    let scoreHTML = "<div style='margin:30px 0'>";
+    let scoreHTML = "<div style='margin:40px 0'>";
     workshops.forEach((w,i) => {
-      const pct = Math.round((scores[i]/110)*100);
-      const isTop = i === top;
-      scoreHTML += `<div style="margin:20px 0;text-align:center">
-        <div style="font-size:6rem;line-height:1">${icons[i]}</div>
-        <div style="font-weight:bold;font-size:1.3rem;color:${isTop?'#c41e3a':'#555'}">${w}</div>
-        <div style="font-size:1.1rem">${scores[i]}/110 • ${pct}%</div>
-      </div>`;
+      const pct = Math.round(scores[i] / (i===top ? 120 : 110) * 100); // top gets +10 possible
+      scoreHTML += `
+        <div style="margin:20px 0;text-align:center">
+          <div style="font-size:5rem">${icons[i]}</div>
+          <div style="font-weight:bold;font-size:1.5rem;color:${i===top?'#c41e3a':'#555'}">${w}</div>
+          <div style="font-size:1.2rem">${scores[i]}/110 • ${pct}%</div>
+        </div>`;
     });
     scoreHTML += "</div>";
     document.getElementById('scores').innerHTML = scoreHTML;
@@ -300,122 +317,110 @@
     confetti({particleCount:400,spread:90,origin:{y:0.6}});
     document.getElementById('victorySound').play().catch(()=>{});
 
+    // PDF Button
     document.getElementById('downloadBtn').onclick = generateBeautifulPDF;
   }
 
- function generateBeautifulPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const red = [196, 30, 58];
+  function generateBeautifulPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const red = [196, 30, 58];
 
-  // Top 1 & Top 2
-  const sorted = [...scores].map((s, i) => ({score: s, index: i}))
-    .sort((a, b) => b.score - a.score);
-  const top1 = sorted[0];
-  const top2 = sorted[1];
-  const pct1 = Math.round((top1.score / 110) * 100);
-  const pct2 = Math.round((top2.score / 110) * 100);
+    const sorted = [...scores].map((s, i) => ({score:s, index:i}))
+      .sort((a,b)=>b.score-a.score);
+    const top1 = sorted[0], top2 = sorted[1];
+    const pct1 = Math.round(top1.score / 120 * 100);
+    const pct2 = Math.round(top2.score / 110 * 100);
 
-  // Header
-  doc.setFillColor(...red);
-  doc.rect(0, 0, pageWidth, 55, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(32);
-  doc.setFont("helvetica", "bold");
-  doc.text("YOUTH", pageWidth / 2, 25, { align: "center" });
-  doc.setFontSize(48);
-  doc.text("On Fire!", pageWidth / 2, 42, { align: "center" });
+    // Header
+    doc.setFillColor(...red);
+    doc.rect(0,0,pageWidth,55,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(32);
+    doc.setFont("helvetica","bold");
+    doc.text("YOUTH", pageWidth/2,25,{align:"center"});
+    doc.setFontSize(48);
+    doc.text("On Fire!", pageWidth/2,42,{align:"center"});
 
-  // NAME
-  doc.setTextColor(...red);
-  doc.setFontSize(34);
-  doc.setFont("helvetica", "bold");
-  doc.text(userName || "Youth", pageWidth / 2, 72, { align: "center" });
+    // Name & Top Calling
+    doc.setTextColor(...red);
+    doc.setFontSize(34);
+    doc.text(userName, pageWidth/2,72,{align:"center"});
+    doc.setFontSize(28);
+    doc.text(workshops[top1.index], pageWidth/2,92,{align:"center"});
 
-  // #1 Calling
-  doc.setFontSize(28);
-  doc.text(workshops[top1.index], pageWidth / 2, 92, { align: "center" });
+    // Big Circle
+    doc.setFillColor(...red);
+    doc.circle(pageWidth/2,130,38,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(34);
+    doc.text(`${pct1}%`, pageWidth/2,138,{align:"center"});
 
-  // #1 Circle
-  doc.setFillColor(...red);
-  doc.circle(pageWidth / 2, 130, 38, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(34);
-  doc.text(`${pct1}%`, pageWidth / 2, 138, { align: "center" });
+    // Description
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(13);
+    const desc = doc.splitTextToSize(descriptions[top1.index],170);
+    doc.text(desc, pageWidth/2,175,{align:"center"});
 
-  // Description
-  doc.setTextColor(0, 0, 0);
-  doc.setFontSize(13);
-  const desc = doc.splitTextToSize(descriptions[top1.index], 170);
-  doc.text(desc, pageWidth / 2, 175, { align: "center" });
+    // Second Circle
+    doc.setFillColor(...red);
+    doc.circle(pageWidth/2,218,30,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(26);
+    doc.text(`${pct2}%`, pageWidth/2,224,{align:"center"});
+    doc.setTextColor(...red);
+    doc.setFontSize(20);
+    doc.text(workshops[top2.index], pageWidth/2,255,{align:"center"});
 
-  // #2 Circle (moved up a bit)
-  doc.setFillColor(...red);
-  doc.circle(pageWidth / 2, 218, 30, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(26);
-  doc.text(`${pct2}%`, pageWidth / 2, 224, { align: "center" });
+    // Verse
+    doc.setFillColor(255,245,230);
+    doc.roundedRect(25,265,pageWidth-50,20,6,6,'F');
+    doc.setTextColor(...red);
+    doc.setFontSize(14);
+    doc.setFont("helvetica","italic");
+    doc.text(verses[top1.index], pageWidth/2,276,{align:"center"});
 
-  // #2 Title (moved up — no more overlap!)
-  doc.setTextColor(...red);
-  doc.setFontSize(20);
-  doc.setFont("helvetica", "bold");
-  doc.text(workshops[top2.index], pageWidth / 2, 255, { align: "center" });
+    // Footer
+    doc.setTextColor(100,100,100);
+    doc.setFontSize(10);
+    doc.text("Filipino Evangelical Church • Christmas Youth Assembly 2025", pageWidth/2,290,{align:"center"});
 
-  // Bible Verse
-  doc.setFillColor(255, 245, 230);
-  doc.roundedRect(25, 265, pageWidth - 50, 20, 6, 6, 'F');
-  doc.setTextColor(...red);
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "italic");
-  doc.text(verses[top1.index], pageWidth / 2, 276, { align: "center" });
+    // CROSS-PLATFORM DOWNLOAD (Android + iOS + Desktop)
+    const pdfBlob = doc.output('blob');
+    const fileName = `${userName || "Youth"}_FindYourFire_2025.pdf`;
+    const url = URL.createObjectURL(pdfBlob);
 
-  // Footer
-  doc.setTextColor(100, 100, 100);
-  doc.setFontSize(10);
-  doc.text("filipino Evangelical Church • Christmas Youth Assembly 2025", pageWidth / 2, 290, { align: "center" });
-
- // ONLY CHANGE THE LAST LINE — this is the Android fix
-const pdfOutput = doc.output('blob');                     // ← creates a real file blob
-const fileName = `${userName || "Youth"}_FindYourFire_2025.pdf`;
-
-// Android + iOS safe download
-if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
-  // Mobile: open in new tab so user can long-press → "Download"
-  const blobUrl = URL.createObjectURL(pdfOutput);
-  const link = document.createElement('a');
-  link.href = blobUrl;
-  link.download = fileName;
-  link.target = '_blank';
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-} else {
-  // Desktop: normal instant download using the same blob
-  const blobUrl = URL.createObjectURL(pdfOutput);
-  const link = document.createElement('a');
-  link.href = blobUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-}
-  // Auto-resume if they closed the tab
-  const saved = localStorage.getItem('fireQuiz');
-  if (saved) {
-    const data = JSON.parse(saved);
-    current = data.current || 0;
-    answered = data.answered || 0;
-    scores = data.scores || [0,0,0,0,0];
-    startQuiz(); // jumps straight to quiz if they have progress
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      // Mobile → open preview (user long-press → save)
+      window.open(url, '_blank');
+    } else {
+      // Desktop → instant download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
   }
-function restartQuiz() {
-  if (confirm('Are you sure you want to start over? All progress will be deleted.')) {
-    localStorage.removeItem('fireQuiz');
-    location.reload();
+
+  function restartQuiz() {
+    if (confirm('Are you sure you want to start over? All progress will be deleted.')) {
+      localStorage.removeItem('fireQuiz');
+      location.reload();
+    }
   }
-}
+
+  // OPTIONAL: Auto-resume on page load only if user already started before
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('fireQuiz');
+    if (saved && JSON.parse(saved).current > 0) {
+      // Show a small resume button or auto-jump? Up to you.
+      // For now we do nothing – user must click START again (safer)
+    }
+  });
 </script>
 </body>
 </html>
