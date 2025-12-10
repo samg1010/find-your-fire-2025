@@ -374,9 +374,25 @@
   // Footer
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(10);
-  doc.text("Free Methodist Church Philippines • Youth Assembly 2025", pageWidth / 2, 290, { align: "center" });
+  doc.text("filipino Evangelical Church • Christmas Youth Assembly 2025", pageWidth / 2, 290, { align: "center" });
 
-  doc.save(`${userName || "Youth"}_FindYourFire_2025.pdf`);
+   // ONLY CHANGE THE LAST LINE — this is the Android fix
+  const pdfOutput = doc.output('blob');                     // ← creates a real file blob
+  const fileName = `${userName || "Youth"}_FindYourFire_2025.pdf`;
+
+  // Android + iOS safe download
+  if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+    // Mobile: open in new tab so user can long-press → "Download"
+    const blobUrl = URL.createObjectURL(pdfOutput);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = fileName;
+    link.target = '_blank';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+  } else {
+    // Desktop: normal instant download
+    doc.save(fileName);
 }
 
   // Auto-resume if they closed the tab
