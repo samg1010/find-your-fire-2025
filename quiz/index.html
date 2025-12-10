@@ -392,35 +392,27 @@
 
       // CROSS-PLATFORM DOWNLOAD — FIXED FOR ANDROID
     const pdfBlob = doc.output('blob');
-    const fileName = `${userName || "Youth"}_FindYourFire_2025.pdf`;
-    const url = URL.createObjectURL(pdfBlob);
+  const fileName = `${userName || "Youth"}_FindYourFire_2025.pdf`;
+  const url = URL.createObjectURL(pdfBlob);
 
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;  // Suggests filename (works on Android download)
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;  // Helps suggest filename where possible
+  link.target = '_blank';    // Crucial: open in new tab
+  link.rel = 'noopener';     // Security best practice
 
-    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      // Mobile: open in new tab (most reliable way)
-      link.target = '_blank';
-      link.rel = 'noopener';  // Security
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 
-      // Optional: Helpful message for users
-      setTimeout(() => {
-        alert('PDF opened! Look for the download/share button in the browser (usually top-right or bottom).');
-      }, 1000);
-    } else {
-      // Desktop: instant download
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    // Cleanup memory
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
-  }
+  // Cleanup
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
 
+  // Helpful instruction for Messenger users
+  setTimeout(() => {
+    alert('PDF opened in new tab!\n\nOn Messenger/Facebook:\n• Tap the ⤓ download icon (top-right)\n• Or tap ⋮ More → Download/Save to Files');
+  }, 800);
+}
   function restartQuiz() {
     if (confirm('Are you sure you want to start over? All progress will be deleted.')) {
       localStorage.removeItem('fireQuiz');
