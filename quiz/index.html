@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIND YOUR FIRE • Christmas Youth Assembly 2025</title>
-
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
   <style>
     body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#ffe6e6,#fff0e6);margin:0;padding:20px;color:#333}
     .container{max-width:600px;margin:auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.2)}
@@ -29,14 +27,13 @@
   </style>
 </head>
 <body>
-
 <div class="container">
   <header>
     <h1>FIND YOUR FIRE</h1>
     <p>Christmas Youth Assembly 2025 • FEMC Philippines</p>
   </header>
 
-  <!-- ONLY ONE INTRO (fixed) -->
+  <!-- INTRO -->
   <div id="intro" style="padding:30px;text-align:center">
     <h2>Discover Your Spiritual Gift & Calling!</h2>
     <p>Answer honestly • 101 questions • Takes ~20 mins</p>
@@ -45,7 +42,7 @@
     <button class="btn" onclick="startQuiz()" style="padding:18px 50px;font-size:1.4rem">START QUIZ</button>
   </div>
 
-  <!-- QUIZ SECTION -->
+  <!-- QUIZ -->
   <div id="quiz" style="display:none">
     <div class="prog"><div class="bar" id="bar"></div></div>
     <div style="text-align:center;margin:10px 0 20px;font-weight:bold;color:#c41e3a;font-size:1.2rem">
@@ -55,7 +52,7 @@
     <div class="options" id="options"></div>
   </div>
 
-  <!-- RESULT SECTION -->
+  <!-- RESULT -->
   <div class="result" id="result">
     <h2 id="greeting">Congratulations!</h2>
     <h2>Your Calling is...</h2>
@@ -66,8 +63,8 @@
     <button id="downloadBtn">Download My Results as PDF</button>
     <br><br>
     <button class="btn" onclick="restartQuiz()" style="margin-top:10px;padding:18px 40px;font-size:1.2rem">
-  Take Again (Clear All Answers)
-</button>
+      Take Again (Clear All Answers)
+    </button>
   </div>
 </div>
 
@@ -77,8 +74,12 @@
 
 <script>
   let userName = "";
+  let current =  = 0;
+  let answered = 0;
+  let scores   = [0,0,0,0,0]; // A B C D E
+
   const workshops = ["Bible Teaching","Evangelism","Worship & Music","Digital Ministry","Mercy & Compassion"];
-  const icons = ["📖", "✝️", "🎵", "💻", "❤️"];
+  const icons = ["Bible", "Cross", "Music", "Laptop", "Heart"];
   const descriptions = [
     "You are called to teach God’s Word with clarity and depth!",
     "You have a heart to share Jesus boldly with the lost!",
