@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="tl">
 <head>
+  <!-- Google Analytics 4 (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6NZD1BKSK8');
+</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FIND YOUR FIRE • Christmas Youth Assembly 2025</title>
@@ -232,9 +240,13 @@ fetch('https://api.countapi.xyz/hit/findyourfire2025/visitors')
     }
 
     document.getElementById('intro').style.display = 'none';
+    gtag('event', 'quiz_start', {
+  'event_category': 'Quiz Engagement',
+  'event_label': userName || 'Anonymous'
+});
     document.getElementById('quiz').style.display = 'block';
     loadQuestion();
-  }
+      }
 
   function loadQuestion() {
     if (current >= questions.length) {
@@ -319,6 +331,13 @@ fetch('https://api.countapi.xyz/hit/findyourfire2025/visitors')
     document.getElementById('victorySound').play().catch(()=>{});
 
     document.getElementById('downloadBtn').onclick = saveAsImage;
+
+    const topWorkshop = workshops[scores.indexOf(Math.max(...scores))];
+gtag('event', 'quiz_complete', {
+  'event_category': 'Quiz Engagement',
+  'event_label': topWorkshop,
+  'value': 1  // Counts completions
+});
   }
 
   function saveAsImage() {
@@ -331,6 +350,11 @@ fetch('https://api.countapi.xyz/hit/findyourfire2025/visitors')
     }).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
       const fileName = `${userName || "Youth"}_FindYourFire_2025.png`;
+
+      gtag('event', 'image_save', {
+  'event_category': 'Quiz Sharing',
+  'event_label': topWorkshop
+});
 
       // Create download link
       const link = document.createElement('a');
