@@ -35,12 +35,28 @@
   </header>
 
   <div id="intro" style="padding:30px;text-align:center">
-    <h2>Discover Your Spiritual Gift & Calling!</h2>
-    <p>Answer honestly • 101 questions • Takes ~20 mins</p>
-    <input type="text" id="name" placeholder="Enter your full name">
-    <br><br>
-    <button class="btn" onclick="startQuiz()" style="padding:18px 50px;font-size:1.4rem">START QUIZ</button>
+  <h2>Discover Your Spiritual Gift & Calling!</h2>
+  <p>Answer honestly • 101 questions • Takes ~20 mins</p>
+  
+  <div style="margin:25px 0; font-size:1.3rem; color:#c41e3a; font-weight:bold;">
+    <span id="visitorCount">Many</span> youth have discovered their fire! 🔥
   </div>
+
+  <input type="text" id="name" placeholder="Enter your full name">
+  <br><br>
+  <button class="btn" onclick="startQuiz()" style="padding:18px 50px;font-size:1.4rem">START QUIZ</button>
+</div>
+
+<script>
+fetch('https://api.countapi.xyz/hit/findyourfire2025/visitors')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('visitorCount').textContent = data.value.toLocaleString();
+  })
+  .catch(() => {
+    document.getElementById('visitorCount').textContent = "Thousands of";
+  });
+</script>
 
   <div id="quiz" style="display:none">
     <div class="prog"><div class="bar" id="bar"></div></div>
