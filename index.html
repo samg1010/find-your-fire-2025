@@ -89,7 +89,7 @@
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
       allowfullscreen>
     </iframe>
-   <a href="https://www.facebook.com/profile.php?id=61561665394720" class="card" target="_blank>
+   <a href="https://www.facebook.com/profile.php?id=61561665394720" class="k" target="_blank">
     <i class="fab fa-facebook"></i><br>Tumauini Methodist Church
   </a>
   <a href="https://www.facebook.com/profile.php?id=61566247075215" class="k" target="_blank">
@@ -121,7 +121,7 @@
 <script>
   window.addEventListener('load',()=>{document.querySelector('.container').classList.add('visible');});
   const observer=new IntersectionObserver(e=>e.forEach((e,i)=>e.isIntersecting&&setTimeout(()=>e.target.classList.add('visible'),i*150)),{threshold:0.1});
-  document.querySelectorAll('.card .k').forEach(c=>observer.observe(c));
+  document.querySelectorAll('.card, .k').forEach(c=>observer.observe(c));
   const c=document.getElementById('counter'), target=1247;
   let n=0; const inc=Math.ceil(target/80);
   const t=setInterval(()=>{n+=inc; c.textContent=n>toLocaleString(); if(n>=target){c.textContent=target.toLocaleString();clearInterval(t);}},30);
