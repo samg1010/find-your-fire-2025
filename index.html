@@ -17,42 +17,14 @@
     h1 { font-family:'Montserrat',sans-serif; font-size:3.2rem; margin-bottom:10px; }
     .tagline { font-size:1rem; }
     .links { padding:60px 30px; display:grid; gap:30px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
-    .card { background:white; border-radius:15px; padding:40px 25px; text-align:center; text-decoration:none; color:var(--dark); font-weight:600; font-size:1.3rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); transform:translateY(30px); opacity:0; transition:all 0.6s; border:2px solid transparent; }
+    .card { background:white; border-radius:15px; padding:40px 25px; text-align:center; text-decoration:none; color:var(--dark); font-weight:600; font-size:1.3rem; box-shadow:0 6px 20px rgba(0,0,0,0.08); transform:translateY(30px); opacity:0; transition:all 0.6s; border:2px solid transparent; display:block; }
     .card.visible { opacity:1; transform:none; }
     .card:hover { transform:translateY(-12px); border-color:var(--primary); box-shadow:0 20px 40px rgba(196,30,58,0.2); }
     .card i { font-size:3.5rem; margin-bottom:20px; color:var(--primary); }
+    .video-wrapper { margin:40px 20px; position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+    .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
     .counter { text-align:center; padding:50px; background:var(--dark); color:white; font-size:1.6rem; }
     .count-num { font-size:4rem; font-weight:bold; color:var(--primary); }
-    .k {
-  background: white;
-  border-radius: 15px;
-  padding: 40px 25px;
-  text-align: center;
-  text-decoration: none;
-  color: var(--dark);
-  font-weight: 600;
-  font-size: 1.3rem;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  transform: translateY(30px);
-  opacity: 0;
-  transition: all 0.6s;
-  border: 2px solid transparent;
-  display: block; /* Important so it takes full grid space */
-}
-
-.k.visible { opacity: 1; transform: none; }
-
-.k:hover {
-  transform: translateY(-12px);
-  border-color: var(--primary);
-  box-shadow: 0 20px 40px rgba(196,30,58,0.2);
-}
-
-.k i {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  color: var(--primary);
-}
     footer { text-align:center; padding:30px; background:#111; color:#aaa; }
     @media (max-width:600px) { h1{font-size:2.4rem;} .links{grid-template-columns:1fr; padding:40px 20px;} }
   </style>
@@ -69,42 +41,41 @@
   </header>
 
   <section class="links">
- <a href="https://forms.gle/QjZ9JRw4td4Sq5ESA" class="card" target="_blank">
-  <i class="fas fa-edit"></i><br>CYA Pre-registration Form</a>
-  
-    <a href="/find-your-fire-2025/quiz/" class="card"><i class="fas fa-fire"></i><br>Find Your Fire – Spiritual Gifts Quiz</a>
-<div style="margin:40px 20px;">
-  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2)">
-    <iframe 
-      src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-      allowfullscreen>
-    </iframe>
- <div style="margin:40px 20px;">
-  <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.2)">
-    <iframe 
-      src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-      style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-      allowfullscreen>
-    </iframe>
-   <a href="https://www.facebook.com/profile.php?id=61561665394720" class="k" target="_blank">
-    <i class="fab fa-facebook"></i><br>Tumauini Methodist Church
-  </a>
-  <a href="https://www.facebook.com/profile.php?id=61566247075215" class="k" target="_blank">
-    <i class="fab fa-facebook"></i><br>Promised Land EMC
-  </a>
-<p style="text-align:center; margin:20px;">
-  <a href="https://samg1010.github.io/Biblequiz1" style="color:#5d5fef; font-size:18px;">Genesis 1-5 Quiz
-  </a>
-</p>
-    <a href="https://youtube.com/@femcyouthph" class="k" target="_blank">
-    <i class="fab fa-youtube"></i><br>YouTube
-  </a>
-  <a href="https://femcph.org" class="k" target="_blank">
-    <i class="fas fa-globe"></i><br>Website
-  </a>
+    <a href="https://forms.gle/QjZ9JRw4td4Sq5ESA" class="card" target="_blank">
+      <i class="fas fa-edit"></i><br>CYA Pre-registration Form
+    </a>
+
+    <a href="/find-your-fire-2025/quiz/" class="card" target="_blank">
+      <i class="fas fa-fire"></i><br>Find Your Fire – Spiritual Gifts Quiz
+    </a>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-wrapper">
+      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <a href="https://www.facebook.com/profile.php?id=61561665394720" class="card" target="_blank">
+      <i class="fab fa-facebook"></i><br>Tumauini Methodist Church
+    </a>
+
+    <a href="https://www.facebook.com/profile.php?id=61566247075215" class="card" target="_blank">
+      <i class="fab fa-facebook"></i><br>Promised Land EMC
+    </a>
+
+    <p style="text-align:center; margin:20px; grid-column: 1 / -1;">
+      <a href="https://samg1010.github.io/Biblequiz1" style="color:#5d5fef; font-size:18px;">Genesis 1-5 Quiz</a>
+    </p>
+
+    <a href="https://youtube.com/@femcyouthph" class="card" target="_blank">
+      <i class="fab fa-youtube"></i><br>YouTube Channel
+    </a>
+
+    <a href="https://femcph.org" class="card" target="_blank">
+      <i class="fas fa-globe"></i><br>Website
+    </a>
   </section>
 
   <div class="counter">
@@ -119,12 +90,34 @@
 </div>
 
 <script>
-  window.addEventListener('load',()=>{document.querySelector('.container').classList.add('visible');});
-  const observer=new IntersectionObserver(e=>e.forEach((e,i)=>e.isIntersecting&&setTimeout(()=>e.target.classList.add('visible'),i*150)),{threshold:0.1});
-  document.querySelectorAll('.card, .k').forEach(c=>observer.observe(c));
-  const c=document.getElementById('counter'), target=1247;
-  let n=0; const inc=Math.ceil(target/80);
-  const t=setInterval(()=>{n+=inc; c.textContent=n>toLocaleString(); if(n>=target){c.textContent=target.toLocaleString();clearInterval(t);}},30);
+  window.addEventListener('load', () => {
+    document.querySelector('.container').classList.add('visible');
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 150);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+  // Counter script (fixed small bugs)
+  const counterElement = document.getElementById('counter');
+  const target = 1247;
+  let current = 0;
+  const increment = Math.ceil(target / 80);
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      counterElement.textContent = target.toLocaleString();
+      clearInterval(timer);
+    } else {
+      counterElement.textContent = current.toLocaleString();
+    }
+  }, 30);
 </script>
 </body>
 </html>
