@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -25,6 +25,25 @@
     .video-wrapper iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
     .counter { text-align:center; padding:50px; background:var(--dark); color:white; font-size:1.6rem; }
     .count-num { font-size:4rem; font-weight:bold; color:var(--primary); }
+    .pdf-wrapper {
+  margin: 40px 20px;
+  position: relative;
+  padding-bottom: 141.42%; /* Perfect ratio for A4 portrait PDF */
+  height: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  grid-column: 1 / -1; /* Makes it span full width in the grid */
+}
+
+.pdf-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
     footer { text-align:center; padding:30px; background:#111; color:#aaa; }
     @media (max-width:600px) { h1{font-size:2.4rem;} .links{grid-template-columns:1fr; padding:40px 20px;} }
   </style>
@@ -48,7 +67,9 @@
     <a href="/find-your-fire-2025/quiz/" class="card" target="_blank">
       <i class="fas fa-fire"></i><br>Find Your Fire – Spiritual Gifts Quiz
     </a>
-
+    <div class="pdf-wrapper">
+  <iframe src="Bible-Study-3.pdf" allow="fullscreen"></iframe>
+</div>
     <div class="video-wrapper">
       <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID_1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
