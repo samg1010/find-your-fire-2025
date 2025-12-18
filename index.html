@@ -98,27 +98,50 @@
       <i class="fab fa-facebook"></i><br>Promised Land EMC
     </a>
 
-    <div style="max-width: 600px; margin: 40px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: white; display: flex; align-items: center; transition: transform 0.2s;">
-    <a href="https://samg1010.github.io/Biblequiz1" style="text-decoration: none; color: inherit; display: flex; width: 100%;">
-        <!-- Image on the left -->
-        <div style="flex: 0 0 200px; height: 180px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+    <div style="max-width: 600px; margin: 40px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: white; transition: transform 0.2s;" class="quiz-card">
+    <a href="https://samg1010.github.io/Biblequiz1" target="_blank" style="text-decoration: none; color: inherit; display: flex; flex-direction: row; width: 100%;">
+        <!-- Image on the left (mobile: stacks above text if screen is small) -->
+        <div style="flex: 0 0 220px; min-height: 180px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
             📖
         </div>
         
-        <!-- Text content on the right -->
-        <div style="padding: 24px; flex: 1;">
-            <h3 style="margin: 0 0 12px 0; font-size: 1.4rem; color: #2c3e50;">
-                Genesis 1–5 Bible Quiz
+        <!-- Text content -->
+        <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.4rem; color: #2c3e50;">
+                Bible Quiz: Genesis 1–5 & Luke 1–5
             </h3>
             <p style="margin: 0 0 12px 0; color: #555; font-size: 1rem; line-height: 1.5;">
-                Interactive multiple-choice Bible quiz covering the Creation, Garden of Eden, the Fall, Cain & Abel, and the genealogy leading to Noah (Genesis chapters 1–5).
+                Interactive multiple-choice quiz with 131 questions covering Creation, the Fall, Cain & Abel, genealogy to Noah, and key events in Luke (birth of John, Jesus' birth, ministry start).
             </p>
             <p style="margin: 0; color: #888; font-size: 0.9rem;">
-                samg1010.github.io
+                samg1010.github.io → Tap to start quiz
             </p>
         </div>
     </a>
 </div>
+
+<style>
+    @media (max-width: 600px) {
+        .quiz-card a {
+            flex-direction: column !important;
+        }
+        .quiz-card div:first-child {
+            flex: unset !important;
+            height: 200px !important;
+            font-size: 5rem !important;
+        }
+        .quiz-card div:last-child {
+            padding: 24px !important;
+            text-align: center;
+        }
+        .quiz-card h3 {
+            font-size: 1.6rem !important;
+        }
+    }
+    .quiz-card:hover {
+        transform: translateY(-6px);
+    }
+</style>
 
     <a href="https://youtube.com/@femcyouthph" class="card" target="_blank">
       <i class="fab fa-youtube"></i><br>YouTube Channel
