@@ -3,78 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bible Study Materials</title>
+    <title>Image Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
-            background-color: #f4f6f9;
+            background-color: #f8f9fa;
             color: #333;
-            line-height: 1.6;
+            text-align: center;
         }
         h1 {
-            text-align: center;
             color: #2c3e50;
         }
-        ul {
-            list-style: none;
-            padding: 0;
-            max-width: 800px;
-            margin: 30px auto;
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        li {
-            margin: 12px 0;
-            padding: 15px;
+        .image-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+        .image-item:hover {
+            transform: scale(1.05);
+        }
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .caption {
+            padding: 10px;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        a {
-            text-decoration: none;
-            color: #0066cc;
-            font-size: 1.2em;
             font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .description {
-            font-size: 0.95em;
-            color: #666;
-            margin-top: 6px;
+            font-size: 1.1em;
         }
         footer {
-            text-align: center;
             margin-top: 60px;
-            color: #888;
+            color: #777;
             font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <h1>Bible Study Materials</h1>
-    <p style="text-align: center;">Click any link below to view or download the file.</p>
+    <h1>Image Gallery</h1>
+    <p>Click any image to view it full size in a new tab.</p>
 
-    <ul>
-        <!-- Add or remove items here — just match the exact filename -->
-        <li>
-            <a href="Equipping-the-Saints.pdf" target="_blank">Equipping the Saints</a>
-            <div class="description">Training and resources for ministry.</div>
-        </li>
-        <li>
-            <a href="Resume-Bible-Reading-Plan-2026.pdf" target="_blank">Résumé Bible Reading Plan 2026</a>
-            <div class="description">A fresh start to read through the Bible in 2026.</div>
-        </li>
-        <li>
-            <a href="another-file.pdf" target="_blank">Another Resource Title</a>
-            <div class="description">Brief description here.</div>
-        </li>
-        <!-- Add more <li> blocks for each file in this folder -->
-    </ul>
+    <div class="gallery">
+        <!-- Add one block per image in this folder -->
+        <a href="photo1.jpg" target="_blank" class="image-item">
+            <img src="photo1.jpg" alt="Description of photo 1">
+            <div class="caption">Sunset at the Beach</div>
+        </a>
+
+        <a href="diagram.png" target="_blank" class="image-item">
+            <img src="diagram.png" alt="Bible study diagram">
+            <div class="caption">2026 Reading Plan Overview</div>
+        </a>
+
+        <a href="cover.webp" target="_blank" class="image-item">
+            <img src="cover.webp" alt="Cover image">
+            <div class="caption">Résumé Bible Plan Cover</div>
+        </a>
+
+        <!-- Add more <a> blocks here for each image -->
+    </div>
 
     <footer>
-        All files are hosted in this folder. Links open in a new tab.<br>
-        Share this page: <strong>https://yourusername.github.io/your-repo/folder-name/</strong>
+        All images are hosted in this folder.<br>
+        View this gallery at: <strong>https://yourusername.github.io/your-repo/folder-name/</strong>
     </footer>
 </body>
 </html>
